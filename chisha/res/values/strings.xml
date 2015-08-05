@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="app_name">吃啥</string>
+    <string name="hello_world">Hello world!</string>
+    <string name="action_settings">Settings</string>
+    <string name="slide_up_to_close_all_tab">slide up to close all tab</string>
+    <string name="single_page_show_str">美食详情</string>
+
+</resources>

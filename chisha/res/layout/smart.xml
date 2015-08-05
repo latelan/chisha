@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:background="#d3d3d3"
+    android:gravity="center_horizontal"
+    android:orientation="vertical" >
+
+    <!-- 这里有一个包名，刚的学朋友可能会不知道这些干嘛，这里是指向一个类，我的工程里面不是有我一个包吗，对吧。 -->
+
+    <ImageView
+        android:id="@+id/image"
+        android:layout_width="500dp"
+        android:layout_height="600dp"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentTop="true"
+        android:scaleType="fitXY"
+        android:src="@drawable/timenotarrive" />
+
+    <com.smart.impl.HandClock
+        android:id="@+id/handClock1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:layout_weight="0.10"
+        clockImageSrc="@drawable/clock"
+        handCenterHeightScale="0.5"
+        handCenterWidthScale="0.5"
+        hourHandSize="180"
+        minuteHandSize="210" />
+
+    <TextView
+        android:id="@+id/text1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentLeft="true"
+        android:layout_marginBottom="56dp"
+        android:gravity="center"
+        android:text="用餐时间未到，请十点以后查看"
+        android:typeface="monospace"
+        android:textColor="#000000"
+        android:textSize="24sp" />
+
+</RelativeLayout>
