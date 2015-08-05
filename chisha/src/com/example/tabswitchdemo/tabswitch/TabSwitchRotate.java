@@ -10,6 +10,8 @@ import org.w3c.dom.Notation;
 import com.example.tabswitchdemo.R;
 import com.example.tabswitchdemo.SinglePageShow;
 import com.example.tabswitchdemo.TabSwitchActivity;
+
+import android.app.Activity;
 import android.app.usage.UsageEvents.Event;
 import android.content.Context;
 import android.content.Intent;
@@ -229,9 +231,12 @@ public class TabSwitchRotate extends LinearLayout implements TabSwitch, OnClickL
 		}
 	}
 
+	//返回到手机桌面
 	public boolean processKeyBack() {
 //		return mCtrl.processKeyBack();
-		return true;
+		((Activity) this.getContext()).finish();
+		return false;
+//		return true;
 	}
 
 	public void setAspectRatio(float ratio) {

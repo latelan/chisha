@@ -69,12 +69,12 @@ public class TabSwitchActivity extends Activity {
 		MyTimeController timeCon = new MyTimeController();
 
 		// 10:00֮ǰ
-		if (!timeCon.doesRequest(10, 0)) {
+	/*	if (!timeCon.doesRequest(10, 0)) {
 			Intent intent = new Intent(TabSwitchActivity.this, SmartClock.class);
 			startActivity(intent);
 		} else {
 			
-		}
+		}*/
 
 		
 		if (mTabSwitch == null) {
@@ -264,6 +264,8 @@ public class TabSwitchActivity extends Activity {
 	@Override
 	public void onBackPressed() {
 		// TODO Auto-generated method stub
-//		super.onBackPressed();
+		super.onBackPressed();
+//		Toast.makeText(this, "helloabc", Toast.LENGTH_SHORT).show();
+		finish();
 	}
 }
