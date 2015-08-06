@@ -6,6 +6,8 @@ import com.example.tabswitchdemo.tabswitch.TabSwitch;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.HashMap;
+import java.util.List;
 
 import com.example.tabswitchdemo.R;
 
@@ -35,6 +37,7 @@ import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.Toast;
 
+import com.mwumli.record.XMLOperation;
 import com.smart.clock.SmartClock;
 import com.smart.impl.*;
 
@@ -44,6 +47,7 @@ public class TabSwitchActivity extends Activity {
 	private FrameLayout mTabSwitchViewShim;
 	private TabSwitch mTabSwitch;
 	private ImageView setup_image;
+	private XMLOperation dianzan;
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		requestWindowFeature(Window.FEATURE_NO_TITLE);
@@ -68,6 +72,13 @@ public class TabSwitchActivity extends Activity {
 		}
 		MyTimeController timeCon = new MyTimeController();
 
+
+		
+		if (mTabSwitch == null) {
+			createTabSwitch();
+		}
+		showTabSwitch(true);
+
 		// 10:00֮ǰ
 	/*	if (!timeCon.doesRequest(10, 0)) {
 			Intent intent = new Intent(TabSwitchActivity.this, SmartClock.class);
@@ -75,13 +86,6 @@ public class TabSwitchActivity extends Activity {
 		} else {
 			
 		}*/
-
-		
-		if (mTabSwitch == null) {
-			createTabSwitch();
-		}
-		showTabSwitch(true);
-	
 
 	}
 	
@@ -91,6 +95,16 @@ public class TabSwitchActivity extends Activity {
         @Override  
         public void onAnimationStart(Animation animation) {  
         	setup_image.setBackgroundResource(R.drawable.setup_bg);  
+        	dianzan =  new XMLOperation();
+        	File targetFile = null;
+			try {
+				targetFile = new File(Environment.getExternalStorageDirectory().getCanonicalPath() + "/chisha/" + "dianzan.xml");
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+        	List<HashMap<String, Object>>  zanList = dianzan.parseXMLWithPull(targetFile);
+        	dianzan.saxCreateXML(zanList);
         }  
   
         @Override  

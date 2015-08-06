@@ -1,9 +1,11 @@
 package com.mwumli.record;
 
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.StringWriter;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
@@ -17,12 +19,16 @@ import javax.xml.transform.stream.StreamResult;
 
 import org.xml.sax.SAXException;
 import org.xml.sax.helpers.AttributesImpl;
+import org.xmlpull.v1.XmlPullParser;
+import org.xmlpull.v1.XmlPullParserFactory;
 
 import android.os.Environment;
+import android.widget.Toast;
 
 public class XMLOperation {
 
-	public void saxCreateXML(List<HashMap<String, Object>> sourceList) throws IOException {
+	//把list转化成XML
+	public void saxCreateXML(List<HashMap<String, Object>> sourceList)  {
 		StringWriter xmlWriter = new StringWriter();
 		try {
 			SAXTransformerFactory factory = (SAXTransformerFactory) SAXTransformerFactory.newInstance();
@@ -42,9 +48,10 @@ public class XMLOperation {
 			attr.clear();
 			attr.addAttribute("", "", "author", "", "mwumli");
 			attr.addAttribute("", "", "date", "", "2014-07-27");
-			handler.startElement("", "", "food", attr);
+			handler.startElement("", "", "dianzan", attr);
 
 			int sourceListLen = sourceList.size();
+		
 			for (int i = 0; i < sourceListLen; i++) {
 
 				HashMap<String, Object> item = sourceList.get(i);
@@ -52,21 +59,21 @@ public class XMLOperation {
 				handler.startElement("", "", "item", attr);
 
 				attr.clear();
-				handler.startElement("", "", "date", attr);
-				String date = (String) item.get("date");
+				handler.startElement("", "", "foodIndex", attr);
+				String date = (String) item.get("foodIndex").toString();
 				handler.characters(date.toCharArray(), 0, date.length());
-				handler.endElement("", "", "date");
+				handler.endElement("", "", "foodIndex");
 
 				attr.clear();
-				handler.startElement("", "", "foodname", attr);
-				String foodname = (String) item.get("foodname");
+				handler.startElement("", "", "zan", attr);
+				String foodname = (String) item.get("zan").toString();
 				handler.characters(foodname.toCharArray(), 0, foodname.length());
-				handler.endElement("", "", "foodname");
+				handler.endElement("", "", "zan");
 
 				handler.endElement("", "", "item");
 			}
 
-			handler.endElement("", "", "food");
+			handler.endElement("", "", "dianzan");
 			handler.endDocument();
 
 		} catch (TransformerFactoryConfigurationError e) { // SAXTransformerFactory.newInstance
@@ -81,47 +88,45 @@ public class XMLOperation {
 			e.printStackTrace();
 		}
 
-		saveFile(xmlWriter.toString());
+		try {
+			saveFile(xmlWriter.toString());
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		// return xmlWriter.toString();
 	}
 
-	public boolean saveFile(String data) throws IOException {
+	public List<HashMap<String, Object>> initSourceList() {
+		
+		List<HashMap<String, Object>> sourceList = new ArrayList<HashMap<String, Object>>();
+		for (int i = 0; i < 9; i++) {
+			HashMap<String, Object> itemHashMap = new HashMap<String, Object>();
+			itemHashMap.put("foodIndex", i);
+			itemHashMap.put("zan", false);
+			sourceList.add(itemHashMap);
+		}
+		
+		return sourceList;
+	}
 
-		File targetFile = new File(Environment.getExternalStorageDirectory().getCanonicalPath() + "/log/" + "bm.xml");
-		targetFile.delete();
-		FileOutputStream outStream = new FileOutputStream(targetFile);
-
-		outStream.write(data.getBytes());
-		outStream.close();
-		return true;
-
-	}// saveFile
-
+	//解析文件为一个  list 
 	public List<HashMap<String, Object>> parseXMLWithPull(File file) {
-		return null;
-/*
+		
+		List<HashMap<String, Object>> sourceList = null;
+		//文件不存在，初始化文件，并返回初始化list
 		if (!file.exists()) {
-			List<HashMap<String, Object>> sourceList = null;
-			try {
-				sourceList = initSourceList();
-			} catch (IOException e1) {
-				// TODO Auto-generated catch block
-				e1.printStackTrace();
-			}
+			
+			sourceList = initSourceList();
 
-			try {
-				saxCreateXML(sourceList);
-			} catch (IOException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-
+			saxCreateXML(sourceList);
+			return sourceList;
 		}
 
+		//如果文件存在，解析出list，并返回
 		try {
 			XmlPullParserFactory factory = XmlPullParserFactory.newInstance();
 			XmlPullParser xmlPullParser = factory.newPullParser();
-			List<HashMap<String, Object>> sourceList;
 			HashMap<String, Object> item;
 
 			sourceList = new ArrayList<HashMap<String, Object>>();
@@ -138,12 +143,12 @@ public class XMLOperation {
 				String nodename = xmlPullParser.getName();
 				switch (eventType) {
 				case XmlPullParser.START_TAG:
-					if ("date".equals(nodename)) {
+					if ("zan".equals(nodename)) {
 						date = xmlPullParser.nextText();
-						item.put("date", date);
-					} else if ("foodname".equals(nodename)) {
+						item.put("zan", date);
+					} else if ("foodIndex".equals(nodename)) {
 						foodname = xmlPullParser.nextText();
-						item.put("foodname", foodname);
+						item.put("foodIndex", foodname);
 					}
 					break;
 				case XmlPullParser.END_TAG: {
@@ -158,12 +163,23 @@ public class XMLOperation {
 				}
 				eventType = xmlPullParser.next();
 			}
-			return sourceList;
+			
 		} catch (Exception e) {
 			// TODO: handle exception
 			e.printStackTrace();
 		}
-		return null;*/
+		return sourceList;
 	}
 
+	public boolean saveFile(String data) throws IOException {
+
+		File targetFile = new File(Environment.getExternalStorageDirectory().getCanonicalPath() + "/chisha/" + "dianzan.xml");
+		targetFile.delete();
+		FileOutputStream outStream = new FileOutputStream(targetFile);
+
+		outStream.write(data.getBytes());
+		outStream.close();
+		return true;
+
+	}// saveFile
 }
