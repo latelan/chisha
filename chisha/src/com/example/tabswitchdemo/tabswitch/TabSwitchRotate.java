@@ -231,11 +231,19 @@ public class TabSwitchRotate extends LinearLayout implements TabSwitch, OnClickL
 		}
 	}
 
+	
 	//返回到手机桌面
 	public boolean processKeyBack() {
 //		return mCtrl.processKeyBack();
-		((Activity) this.getContext()).finish();
-		return false;
+//		((Activity) this.getContext()).finish();
+        Intent mHomeIntent = new Intent(Intent.ACTION_MAIN);
+
+        mHomeIntent.addCategory(Intent.CATEGORY_HOME);
+        mHomeIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK
+                        | Intent.FLAG_ACTIVITY_RESET_TASK_IF_NEEDED);
+        ((Activity) this.getContext()).startActivity(mHomeIntent);
+
+		return true;
 //		return true;
 	}
 
