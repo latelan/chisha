@@ -23,6 +23,7 @@ public class ToServer {
 	private  int msgWhatFetchMenu = 0x123;
 	private  int msgWhatFetchVotes = 0x124;
 	private  int msgWhatVote = 0x125;
+	private  int msgWhatCancelVote = 0x126;
 	
 	
 	// 投票
@@ -40,6 +41,23 @@ public class ToServer {
 		String msgStr = msgJson.toString();
 		msgWhat = msgWhatVote;
 		postRequest(server_url, msgStr, handler);
+	}
+	
+	public void cancelVote(int dish_id, Handler handler){
+		JSONObject msgJson = new JSONObject();
+		
+		try {
+			msgJson.put("mode", "cancel_vote");
+			msgJson.put("dish_id", dish_id);
+		} catch (JSONException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		String msgStr = msgJson.toString();
+		msgWhat = msgWhatCancelVote;
+		postRequest(server_url, msgStr, handler);
+		
 	}
 	
 	// 获取投票信息
