@@ -33,7 +33,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-public class SinglePageShow extends Activity {
+public class SinglePageShow extends Activity  {
 
 	private int cur_index;
 	private String icon_path;
@@ -46,6 +46,7 @@ public class SinglePageShow extends Activity {
 	private XMLOperation dianzan;
 	private List<HashMap<String, Object>> zanList;
 
+	private boolean doesExit = true;
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -79,8 +80,10 @@ public class SinglePageShow extends Activity {
 
 		/* 请求服务器，更新点赞数据 */
 		server = new ToServer();
-		server.fetchVotes(cur_index + 1, handler);
+		server.fetchVotes(cur_index + 1, handler); 
 
+	
+		
 		/* 更新本地点赞背景 */
 		if (zanList.get(cur_index).get("zan").equals("true")) {
 			single_page_show_zan.setBackgroundResource(R.drawable.zan);
@@ -165,8 +168,8 @@ public class SinglePageShow extends Activity {
 						single_page_show_view.setText(Html.fromHtml(cur_des
 								+ chooseMan));
 					} else { // 数据异常
-						Toast.makeText(getBaseContext(), "服务器返回数据异常",
-								Toast.LENGTH_SHORT).show();
+//						Toast.makeText(getBaseContext(), "服务器返回数据异常",
+//								Toast.LENGTH_SHORT).show();
 					}
 				} catch (JSONException e) {
 					// TODO Auto-generated catch block
@@ -182,8 +185,8 @@ public class SinglePageShow extends Activity {
 
 						server.fetchVotes(cur_index + 1, handler);
 					} else {
-						Toast.makeText(getBaseContext(), "服务器返回数据异常",
-								Toast.LENGTH_SHORT).show();
+			/*			Toast.makeText(getBaseContext(), "服务器返回数据异常",
+								Toast.LENGTH_SHORT).show();*/
 					}
 
 				} catch (JSONException e) {
@@ -200,8 +203,8 @@ public class SinglePageShow extends Activity {
 
 						server.fetchVotes(cur_index + 1, handler);
 					} else {
-						Toast.makeText(getBaseContext(), "服务器返回数据异常",
-								Toast.LENGTH_SHORT).show();
+				/*		Toast.makeText(getBaseContext(), "服务器返回数据异常",
+								Toast.LENGTH_SHORT).show();*/
 					}
 
 				} catch (JSONException e) {
@@ -213,37 +216,21 @@ public class SinglePageShow extends Activity {
 		}
 	};
 
-	@Override
-	public boolean onCreateOptionsMenu(Menu menu) {
-		// Inflate the menu; this adds items to the action bar if it is present.
-		getMenuInflater().inflate(R.menu.test, menu);
-		return true;
-	}
 
-	@Override
-	protected void onStart() {
-		// TODO Auto-generated method stub
-		super.onStart();
 
-	}
+	
 
-	@Override
-	public boolean onOptionsItemSelected(MenuItem item) {
-		// Handle action bar item clicks here. The action bar will
-		// automatically handle clicks on the Home/Up button, so long
-		// as you specify a parent activity in AndroidManifest.xml.
-		int id = item.getItemId();
-		if (id == R.id.action_settings) {
-			return true;
-		}
-		return super.onOptionsItemSelected(item);
-	}
+
+
 
 	@Override
 	public void onBackPressed() {
 		// TODO Auto-generated method stub
 		dianzan.saxCreateXML(zanList);
+		doesExit = false;
 		super.onBackPressed();
 
 	}
+
+	
 }
