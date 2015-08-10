@@ -63,12 +63,12 @@ public class TabSwitchRotate extends LinearLayout implements TabSwitch, OnClickL
 				case MotionEvent.ACTION_DOWN:
 					random = new Random();
 					 
-					mCtrl.setCurrentIndex(Math.abs(random.nextInt())%4);
+					mCtrl.setCurrentIndex(Math.abs(random.nextInt())%8);
 					break;
 				case MotionEvent.ACTION_MOVE:
 					random = new Random();
 					 
-					mCtrl.setCurrentIndex(Math.abs(random.nextInt())%4);
+					mCtrl.setCurrentIndex(Math.abs(random.nextInt())%8);
 					break;
 				case MotionEvent.ACTION_UP:
 					mCtrl.setCurrentIndex(mCtrl.getCurrentIndex());
